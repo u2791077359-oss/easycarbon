@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EasyCarbon — Carbon Footprint Marketplace</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a0f;
+  --bg2:#111118;
+  --bg3:#1a1a24;
+  --border:#2a2a3a;
+  --text:#f0f0f5;
+  --text2:#9090a8;
+  --text3:#5a5a72;
+  --green:#22c55e;
+  --green-bg:#0f2a1a;
+  --green-border:#166534;
+  --red:#ef4444;
+  --red-bg:#2a0f0f;
+  --blue:#3b82f6;
+  --blue-bg:#0f1a2a;
+  --amber:#f59e0b;
+  --amber-bg:#2a1f0f;
+  --radius:10px;
+  --radius-sm:6px;
+}
+body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:14px;line-height:1.6;min-height:100vh}
+
+/* NAV */
+nav{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:100}
+.logo{display:flex;align-items:center;gap:8px;font-size:18px;font-weight:600;color:var(--text)}
+.logo span{color:var(--green)}
+.nav-links{display:flex;gap:8px}
+.nav-link{padding:6px 14px;border-radius:var(--radius-sm);color:var(--text2);cursor:pointer;font-size:13px;border:none;background:none;transition:all .15s}
+.nav-link:hover,.nav-link.active{background:var(--bg3);color:var(--text)}
+.nav-cta{background:var(--green);color:#000;padding:7px 16px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;border:none;cursor:pointer}
+
+/* HERO */
+.hero{text-align:center;padding:4rem 2rem 3rem;max-width:700px;margin:0 auto}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--green-bg);border:1px solid var(--green-border);color:var(--green);padding:4px 12px;border-radius:20px;font-size:12px;font-weight:500;margin-bottom:1.5rem}
+.hero h1{font-size:42px;font-weight:700;line-height:1.2;margin-bottom:1rem}
+.hero h1 span{color:var(--green)}
+.hero p{font-size:16px;color:var(--text2);margin-bottom:2rem}
+.hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.btn-primary{background:var(--green);color:#000;padding:10px 24px;border-radius:var(--radius-sm);font-weight:500;border:none;cursor:pointer;font-size:14px}
+.btn-secondary{background:var(--bg3);color:var(--text);padding:10px 24px;border-radius:var(--radius-sm);font-weight:500;border:1px solid var(--border);cursor:pointer;font-size:14px}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.stat{background:var(--bg2);padding:1.5rem;text-align:center}
+.stat-val{font-size:28px;font-weight:700;color:var(--green)}
+.stat-label{font-size:12px;color:var(--text2);margin-top:2px}
+
+/* MAIN */
+.main{max-width:1100px;margin:0 auto;padding:2rem}
+.section-title{font-size:11px;font-weight:500;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:1rem}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-bottom:1rem}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+
+/* TABS */
+.tabs{display:flex;gap:4px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:4px;margin-bottom:1.5rem}
+.tab{flex:1;padding:8px;text-align:center;border-radius:var(--radius-sm);cursor:pointer;font-size:13px;color:var(--text2);border:none;background:none;transition:all .15s}
+.tab.active{background:var(--bg3);color:var(--text);border:1px solid var(--border)}
+.page{display:none}
+.page.active{display:block}
+
+/* CALCULATOR */
+label{font-size:12px;color:var(--text2);display:block;margin-bottom:4px}
+input,select{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:var(--radius-sm);font-size:13px;outline:none}
+input:focus,select:focus{border-color:var(--green)}
+.field{margin-bottom:12px}
+.transport-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.t-btn{border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 6px;text-align:center;cursor:pointer;background:var(--bg3);color:var(--text2);font-size:12px;display:flex;flex-direction:column;align-items:center;gap:4px;transition:all .15s}
+.t-btn i{font-size:20px}
+.t-btn.active{border-color:var(--blue);background:var(--blue-bg);color:var(--blue)}
+.metric{background:var(--bg3);border-radius:var(--radius-sm);padding:12px 14px}
+.metric-val{font-size:20px;font-weight:600;margin-top:3px}
+.metric-label{font-size:11px;color:var(--text2)}
+.add-btn{width:100%;background:var(--green);color:#000;padding:10px;border-radius:var(--radius-sm);font-weight:500;border:none;cursor:pointer;font-size:13px;margin-top:8px}
+.item-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.item-row:last-child{border-bottom:none}
+.item-bar-wrap{flex:1;height:5px;background:var(--bg3);border-radius:3px;overflow:hidden}
+.item-bar{height:100%;border-radius:3px;transition:width .4s}
+.remove-btn{background:none;border:none;cursor:pointer;color:var(--text3);font-size:16px;padding:2px 4px}
+.remove-btn:hover{color:var(--red)}
+.badge{display:inline-block;font-size:10px;padding:2px 7px;border-radius:20px;font-weight:500}
+.badge-low{background:var(--green-bg);color:var(--green)}
+.badge-mid{background:var(--amber-bg);color:var(--amber)}
+.badge-high{background:var(--red-bg);color:var(--red)}
+
+/* PROJECTS */
+.proj-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;cursor:pointer;transition:border-color .15s;margin-bottom:10px}
+.proj-card:hover{border-color:var(--text3)}
+.proj-card.selected{border-color:var(--green)}
+.badge-gs{background:var(--green-bg);color:var(--green)}
+.badge-vcs{background:var(--blue-bg);color:var(--blue)}
+.badge-ccb{background:var(--amber-bg);color:var(--amber)}
+.tag{display:inline-block;font-size:10px;padding:1px 6px;border-radius:4px;background:var(--bg3);color:var(--text3);margin:2px 2px 0 0}
+.progress-bar{height:4px;background:var(--bg3);border-radius:2px;overflow:hidden;margin-top:6px}
+.progress-fill{height:100%;border-radius:2px;background:var(--green);transition:width .4s}
+.qty-btn{width:28px;height:28px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg2);color:var(--text);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.qty-btn:hover{background:var(--bg3)}
+.buy-btn{width:100%;padding:11px;font-size:14px;font-weight:500;margin-top:12px;background:var(--green);color:#000;border:none;border-radius:var(--radius-sm);cursor:pointer}
+.buy-btn:disabled{opacity:.4;cursor:not-allowed}
+.cert-box{background:var(--green-bg);border:1px solid var(--green-border);border-radius:var(--radius);padding:1.25rem;text-align:center;display:none;margin-top:12px}
+.divider{height:1px;background:var(--border);margin:1rem 0}
+.checkout-row{display:flex;justify-content:space-between;padding:5px 0;font-size:13px}
+.checkout-row.total{font-weight:600;font-size:15px;border-top:1px solid var(--border);padding-top:10px;margin-top:4px}
+.tip{font-size:12px;color:var(--text3);margin-top:8px;line-height:1.5}
+
+/* FOOTER */
+footer{background:var(--bg2);border-top:1px solid var(--border);padding:2rem;text-align:center;color:var(--text3);font-size:12px;margin-top:3rem}
+footer span{color:var(--green)}
+
+@media(max-width:768px){
+  .grid2,.grid3{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr}
+  .hero h1{font-size:28px}
+  .transport-grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo"><i class="ti ti-leaf"></i> Easy<span>Carbon</span></div>
+  <div class="nav-links">
+    <button class="nav-link active" onclick="showPage('home',this)">Pradžia</button>
+    <button class="nav-link" onclick="showPage('calc',this)">Skaičiuoklė</button>
+    <button class="nav-link" onclick="showPage('credits',this)">Carbon Credits</button>
+    <button class="nav-link" onclick="showPage('about',this)">Apie</button>
+  </div>
+  <button class="nav-cta">Pradėti</button>
+</nav>
+
+<!-- HOME -->
+<div id="page-home" class="page active">
+  <div class="hero">
+    <div class="hero-badge"><i class="ti ti-certificate"></i> Verra VCS · Gold Standard sertifikuota</div>
+    <h1>Apskaičiuokite ir kompensuokite <span>CO₂ pėdsaką</span></h1>
+    <p>Profesionalus įrankis įmonėms. Importo emisijų skaičiavimas, sertifikuotų carbon credits pirkimas ir ESG dokumentacija.</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="showPage('calc',document.querySelectorAll('.nav-link')[1])"><i class="ti ti-calculator"></i> Skaičiuoti CO₂</button>
+      <button class="btn-secondary" onclick="showPage('credits',document.querySelectorAll('.nav-link')[2])"><i class="ti ti-leaf"></i> Pirkti kreditus</button>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-val">500+</div><div class="stat-label">Įmonių naudojasi</div></div>
+    <div class="stat"><div class="stat-val">12,400t</div><div class="stat-label">CO₂ kompensuota</div></div>
+    <div class="stat"><div class="stat-val">6</div><div class="stat-label">Sertifikuoti projektai</div></div>
+  </div>
+
+  <div class="main">
+    <div class="section-title">Kaip tai veikia</div>
+    <div class="grid3">
+      <div class="card" style="text-align:center">
+        <i class="ti ti-calculator" style="font-size:32px;color:var(--blue);margin-bottom:10px;display:block"></i>
+        <div style="font-weight:500;margin-bottom:6px">1. Skaičiuokite</div>
+        <div style="font-size:13px;color:var(--text2)">Įveskite prekes, svorius ir kilmės šalis. Sistema automatiškai apskaičiuoja CO₂ emisiją pagal IPCC standartus.</div>
+      </div>
+      <div class="card" style="text-align:center">
+        <i class="ti ti-leaf" style="font-size:32px;color:var(--green);margin-bottom:10px;display:block"></i>
+        <div style="font-weight:500;margin-bottom:6px">2. Kompensuokite</div>
+        <div style="font-size:13px;color:var(--text2)">Pasirinkite iš 6 sertifikuotų projektų. Lietuviška žemė, Amazonės miškai ar tiesioginis CO₂ surinkimas.</div>
+      </div>
+      <div class="card" style="text-align:center">
+        <i class="ti ti-certificate" style="font-size:32px;color:var(--amber);margin-bottom:10px;display:block"></i>
+        <div style="font-weight:500;margin-bottom:6px">3. Sertifikuokite</div>
+        <div style="font-size:13px;color:var(--text2)">Gaukite oficialų sertifikatą ESG ataskaitoms. Verra VCS ir Gold Standard patvirtinta.</div>
+      </div>
+    </div>
+
+    <div class="section-title" style="margin-top:1.5rem">Kodėl EasyCarbon?</div>
+    <div class="grid2">
+      <div class="card">
+        <div style="font-weight:500;margin-bottom:6px"><i class="ti ti-map-pin" style="color:var(--green)"></i> Lietuviški projektai</div>
+        <div style="font-size:13px;color:var(--text2)">Dirvožemio carbon credits iš Lietuvos žemės ūkio (eAgronom, InSoil). Verra VCS VM0042 sertifikuota.</div>
+      </div>
+      <div class="card">
+        <div style="font-weight:500;margin-bottom:6px"><i class="ti ti-shield-check" style="color:var(--green)"></i> Tarptautiniai standartai</div>
+        <div style="font-size:13px;color:var(--text2)">Gold Standard ir Verra VCS — griežčiausi pasauliniai standartai. Priimama visose ESG ataskaitose.</div>
+      </div>
+      <div class="card">
+        <div style="font-weight:500;margin-bottom:6px"><i class="ti ti-file-text" style="color:var(--green)"></i> EU CSRD atitiktis</div>
+        <div style="font-size:13px;color:var(--text2)">Automatiškai generuojami dokumentai atitinkantys EU CSRD direktyvos reikalavimus nuo 2025 m.</div>
+      </div>
+      <div class="card">
+        <div style="font-weight:500;margin-bottom:6px"><i class="ti ti-headset" style="color:var(--green)"></i> Lietuviška pagalba</div>
+        <div style="font-size:13px;color:var(--text2)">Vienintelis specializuotas carbon credits marketplace Baltijos regione su lietuviška klientų aptarnavimo komanda.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CALCULATOR -->
+<div id="page-calc" class="page">
+  <div class="main">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:1.5rem">
+      <i class="ti ti-calculator" style="font-size:22px;color:var(--green)"></i>
+      <div>
+        <div style="font-size:16px;font-weight:500">Importuojamų prekių CO₂ skaičiuoklė</div>
+        <div style="font-size:12px;color:var(--text2)">Skaičiuoja anglies dioksido išmetimą transportuojant prekes</div>
+      </div>
+    </div>
+
+    <div class="grid2" style="align-items:start">
+      <div>
+        <div class="card">
+          <div class="section-title">Pridėti prekę</div>
+          <div class="field"><label>Prekės pavadinimas</label><input type="text" id="item-name" placeholder="pvz. Nešiojamas kompiuteris"></div>
+          <div class="field"><label>Svoris (kg)</label><input type="number" id="item-weight" min="0.1" step="0.1" value="1"></div>
+          <div class="field">
+            <label>Kilmės šalis</label>
+            <select id="origin-country">
+              <option value="China_sea">Kinija (jūra) — 9200km</option>
+              <option value="China_air">Kinija (oras) — 8200km</option>
+              <option value="USA_air">JAV (oras) — 7600km</option>
+              <option value="USA_sea">JAV (jūra) — 8400km</option>
+              <option value="Germany_road">Vokietija (kelias) — 1100km</option>
+              <option value="Poland_road">Lenkija (kelias) — 700km</option>
+              <option value="Turkey_road">Turkija (kelias) — 2500km</option>
+              <option value="India_sea">Indija (jūra) — 7800km</option>
+              <option value="Vietnam_sea">Vietnamas (jūra) — 9500km</option>
+              <option value="Japan_sea">Japonija (jūra) — 9800km</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Transporto rūšis</label>
+            <div class="transport-grid">
+              <div class="t-btn active" data-mode="sea" onclick="selectMode(this,'sea')"><i class="ti ti-ship"></i><span>Jūra</span></div>
+              <div class="t-btn" data-mode="air" onclick="selectMode(this,'air')"><i class="ti ti-plane"></i><span>Oras</span></div>
+              <div class="t-btn" data-mode="road" onclick="selectMode(this,'road')"><i class="ti ti-truck"></i><span>Kelias</span></div>
+              <div class="t-btn" data-mode="rail" onclick="selectMode(this,'rail')"><i class="ti ti-train"></i><span>Geležinkelis</span></div>
+            </div>
+          </div>
+          <div class="field">
+            <label>Kategorija</label>
+            <select id="item-category">
+              <option value="1.0">Elektronika</option>
+              <option value="1.2">Drabužiai / tekstilė</option>
+              <option value="0.8">Maistas / gėrimai</option>
+              <option value="1.5">Chemija / plastikai</option>
+              <option value="0.9">Baldai / mediena</option>
+              <option value="1.1">Metalai / mašinos</option>
+            </select>
+          </div>
+          <button class="add-btn" onclick="addItem()"><i class="ti ti-plus"></i> Pridėti prekę</button>
+        </div>
+
+        <div class="card">
+          <div class="section-title">Emisijų koeficientai (kg CO₂/t·km)</div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--text2)"><i class="ti ti-plane"></i> Lėktuvas</span><span style="font-weight:500">0.602</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--text2)"><i class="ti ti-truck"></i> Sunkvežimis</span><span style="font-weight:500">0.096</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--text2)"><i class="ti ti-train"></i> Traukinys</span><span style="font-weight:500">0.028</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--text2)"><i class="ti ti-ship"></i> Laivas</span><span style="font-weight:500">0.016</span></div>
+          </div>
+          <p class="tip">Šaltinis: IPCC, GLEC Framework 2023</p>
+        </div>
+      </div>
+
+      <div>
+        <div class="card" style="margin-bottom:12px">
+          <div class="section-title">Bendra emisija</div>
+          <div class="grid3" style="margin-bottom:1rem">
+            <div class="metric"><div class="metric-label">Iš viso CO₂</div><div class="metric-val" id="total-co2" style="color:var(--red)">0.00</div><div style="font-size:10px;color:var(--text3)">kg CO₂e</div></div>
+            <div class="metric"><div class="metric-label">Prekės</div><div class="metric-val" id="total-items">0</div><div style="font-size:10px;color:var(--text3)">vnt.</div></div>
+            <div class="metric"><div class="metric-label">≈ km automobiliu</div><div class="metric-val" id="equiv">—</div><div style="font-size:10px;color:var(--text3)">km</div></div>
+          </div>
+          <button class="btn-primary" style="width:100%;font-size:13px" onclick="goToCredits()"><i class="ti ti-leaf"></i> Kompensuoti emisiją</button>
+        </div>
+
+        <div class="card">
+          <div class="section-title">Prekių sąrašas</div>
+          <div id="items-list">
+            <div style="text-align:center;padding:2rem 0;color:var(--text3)"><i class="ti ti-package" style="font-size:32px;display:block;margin-bottom:8px"></i>Dar nepridėta prekių</div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:12px">
+          <div class="section-title">Rekomendacijos</div>
+          <div id="tips-box" style="font-size:13px;color:var(--text2);line-height:1.7">Pridėkite prekių, kad gautumėte rekomendacijas.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CARBON CREDITS -->
+<div id="page-credits" class="page">
+  <div class="main">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:1.5rem">
+      <i class="ti ti-certificate" style="font-size:22px;color:var(--green)"></i>
+      <div>
+        <div style="font-size:16px;font-weight:500">Voluntary Carbon Credits</div>
+        <div style="font-size:12px;color:var(--text2)">Sertifikuoti kompensavimo projektai · Gold Standard · Verra VCS</div>
+      </div>
+    </div>
+
+    <div class="grid2" style="align-items:start">
+      <div>
+        <div class="card" style="margin-bottom:12px">
+          <div class="section-title">Jūsų emisijų poreikis</div>
+          <div class="field"><label>CO₂ emisijos (kg) — iš skaičiuoklės</label><input type="number" id="emission-input" min="0" step="0.1" value="0" oninput="calcNeeds()"></div>
+          <div class="grid3">
+            <div class="metric"><div class="metric-label">Reikia kompensuoti</div><div class="metric-val" id="need-tonnes" style="color:var(--red)">0.000</div><div style="font-size:10px;color:var(--text3)">t CO₂e</div></div>
+            <div class="metric"><div class="metric-label">Kredito kaina</div><div class="metric-val" id="sel-price">—</div><div style="font-size:10px;color:var(--text3)">EUR/t</div></div>
+            <div class="metric"><div class="metric-label">Rekomenduojama</div><div class="metric-val" id="rec-credits">—</div><div style="font-size:10px;color:var(--text3)">kreditų</div></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="section-title">Projektai</div>
+          <div id="projects-list"></div>
+        </div>
+      </div>
+
+      <div>
+        <div class="card">
+          <div class="section-title">Pirkinių krepšelis</div>
+          <div id="cart-empty" style="text-align:center;padding:2rem 0;color:var(--text3)"><i class="ti ti-shopping-cart" style="font-size:32px;display:block;margin-bottom:8px"></i>Pasirinkite projektą</div>
+          <div id="cart-content" style="display:none">
+            <div style="font-size:13px;font-weight:500;margin-bottom:4px" id="cart-proj-name"></div>
+            <div style="font-size:11px;color:var(--text3);margin-bottom:12px" id="cart-proj-cert"></div>
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+              <button class="qty-btn" onclick="changeQty(-1)">−</button>
+              <div style="font-size:18px;font-weight:600;min-width:32px;text-align:center" id="qty-display">1</div>
+              <button class="qty-btn" onclick="changeQty(1)">+</button>
+              <div style="font-size:12px;color:var(--text2)">t CO₂e kreditų</div>
+            </div>
+            <div class="checkout-row"><span style="color:var(--text2)">Kaina / kreditas</span><span id="unit-price">—</span></div>
+            <div class="checkout-row"><span style="color:var(--text2)">Kreditų skaičius</span><span id="qty-line">—</span></div>
+            <div class="checkout-row"><span style="color:var(--text2)">Registracijos mok.</span><span>€2.00</span></div>
+            <div class="checkout-row total"><span>Iš viso</span><span id="cart-total">—</span></div>
+            <div style="margin-top:10px">
+              <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text2);margin-bottom:3px"><span>Emisijų padengimas</span><span id="coverage-pct">0%</span></div>
+              <div class="progress-bar"><div class="progress-fill" id="coverage-bar" style="width:0%"></div></div>
+            </div>
+            <button class="buy-btn" onclick="purchase()"><i class="ti ti-shield-check"></i> Pirkti kreditus</button>
+          </div>
+          <div class="cert-box" id="cert-box">
+            <i class="ti ti-circle-check" style="font-size:32px;color:var(--green);display:block;margin-bottom:8px"></i>
+            <div style="font-weight:500;margin-bottom:4px">Kompensacija patvirtinta!</div>
+            <div style="font-size:12px;color:var(--text2);margin-bottom:10px" id="cert-details"></div>
+            <div style="font-size:11px;color:var(--text3);background:var(--bg3);border-radius:var(--radius-sm);padding:8px;word-break:break-all" id="cert-id"></div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:12px">
+          <div class="section-title">Standartai</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;gap:8px;align-items:start"><span class="badge badge-gs" style="flex-shrink:0;margin-top:2px">GS</span><div style="font-size:12px;color:var(--text2)"><strong style="color:var(--text)">Gold Standard</strong> — griežčiausias standartas. Reikalauja socialinio poveikio įrodymų ir SDG stebėsenos.</div></div>
+            <div style="display:flex;gap:8px;align-items:start"><span class="badge badge-vcs" style="flex-shrink:0;margin-top:2px">VCS</span><div style="font-size:12px;color:var(--text2)"><strong style="color:var(--text)">Verra VCS</strong> — plačiausiai naudojamas. Griežta trečiosios šalies audito sistema. ~80% rinkos.</div></div>
+            <div style="display:flex;gap:8px;align-items:start"><span class="badge badge-ccb" style="flex-shrink:0;margin-top:2px">CCB</span><div style="font-size:12px;color:var(--text2)"><strong style="color:var(--text)">CCB Standards</strong> — papildomas klimato, bendruomenės ir biologinės įvairovės vertinimas.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div id="page-about" class="page">
+  <div class="main" style="max-width:700px">
+    <div class="card">
+      <div style="font-size:20px;font-weight:600;margin-bottom:1rem">Apie EasyCarbon</div>
+      <div style="font-size:14px;color:var(--text2);line-height:1.8;margin-bottom:1rem">EasyCarbon — pirmasis specializuotas carbon credits marketplace Baltijos regione. Mūsų misija — padaryti anglies dioksido kompensavimą prieinamą ir skaidrų Lietuvos ir Baltijos šalių įmonėms.</div>
+      <div style="font-size:14px;color:var(--text2);line-height:1.8;margin-bottom:1rem">Dirbame su Verra VCS ir Gold Standard sertifikuotais projektais, įskaitant lietuviškos žemės ūkio projektus (eAgronom, InSoil) kurie generuoja carbon credits iš Lietuvos laukų.</div>
+      <div style="font-size:14px;color:var(--text2);line-height:1.8">EU CSRD direktyva nuo 2025 m. reikalauja, kad visos vidutinės ir didelės įmonės reportuotų savo CO₂ emisiją. EasyCarbon padeda įmonėms laikytis šių reikalavimų.</div>
+    </div>
+    <div class="card">
+      <div style="font-weight:500;margin-bottom:1rem">Susisiekite</div>
+      <div style="font-size:13px;color:var(--text2);line-height:2">
+        <div><i class="ti ti-mail" style="color:var(--green)"></i> info@easycarbon.eu</div>
+        <div><i class="ti ti-world" style="color:var(--green)"></i> easycarbon.eu</div>
+        <div><i class="ti ti-map-pin" style="color:var(--green)"></i> Vilnius, Lietuva</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div style="margin-bottom:6px">© 2025 <span>EasyCarbon</span> — Carbon Footprint Marketplace</div>
+  <div>Verra VCS · Gold Standard · EU CSRD atitiktis · Vilnius, Lietuva</div>
+</footer>
+
+<script>
+// PAGE NAVIGATION
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  if(btn) btn.classList.add('active');
+}
+
+// CALCULATOR
+const DISTANCES = {China_sea:9200,China_air:8200,USA_air:7600,USA_sea:8400,Germany_road:1100,Poland_road:700,Turkey_road:2500,India_sea:7800,Vietnam_sea:9500,Japan_sea:9800};
+const EF = {sea:0.016,air:0.602,road:0.096,rail:0.028};
+const MODE_COLORS = {sea:'#3b82f6',air:'#ef4444',road:'#f59e0b',rail:'#22c55e'};
+const MODE_LABELS = {sea:'Jūra',air:'Oras',road:'Kelias',rail:'Geležinkelis'};
+let items = [], selectedMode = 'sea';
+
+function selectMode(el, mode) {
+  document.querySelectorAll('.t-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  selectedMode = mode;
+}
+
+function addItem() {
+  const name = document.getElementById('item-name').value.trim() || 'Prekė';
+  const weight = parseFloat(document.getElementById('item-weight').value) || 1;
+  const country = document.getElementById('origin-country').value;
+  const catFactor = parseFloat(document.getElementById('item-category').value);
+  const dist = DISTANCES[country] || 5000;
+  const co2 = parseFloat(((weight/1000)*dist*EF[selectedMode]*catFactor).toFixed(3));
+  items.push({name,weight,mode:selectedMode,dist,co2});
+  document.getElementById('item-name').value = '';
+  renderCalc();
+}
+
+function removeItem(i) { items.splice(i,1); renderCalc(); }
+
+function renderCalc() {
+  const total = items.reduce((s,x)=>s+x.co2,0);
+  document.getElementById('total-co2').textContent = total.toFixed(2);
+  document.getElementById('total-items').textContent = items.length;
+  document.getElementById('equiv').textContent = total>0?Math.round(total/0.21).toLocaleString():'—';
+  const maxCo2 = Math.max(...items.map(x=>x.co2),0.001);
+  const list = document.getElementById('items-list');
+  if(items.length===0){list.innerHTML='<div style="text-align:center;padding:2rem 0;color:var(--text3)"><i class="ti ti-package" style="font-size:32px;display:block;margin-bottom:8px"></i>Dar nepridėta prekių</div>';return;}
+  list.innerHTML = items.map((it,i)=>{
+    const pct=it.co2/maxCo2*100;
+    const level=it.co2<1?'low':it.co2<10?'mid':'high';
+    const labels={low:'Žemas',mid:'Vidutinis',high:'Aukštas'};
+    return `<div class="item-row">
+      <div style="flex:1"><div style="font-weight:500;font-size:13px">${it.name}</div><div style="font-size:11px;color:var(--text3)">${it.weight}kg · ${it.dist.toLocaleString()}km · ${MODE_LABELS[it.mode]}</div></div>
+      <div class="item-bar-wrap"><div class="item-bar" style="width:${pct.toFixed(1)}%;background:${MODE_COLORS[it.mode]}"></div></div>
+      <div style="text-align:right;min-width:80px;font-size:13px">${it.co2.toFixed(2)}kg<div><span class="badge badge-${level}">${labels[level]}</span></div></div>
+      <button class="remove-btn" onclick="removeItem(${i})"><i class="ti ti-x"></i></button>
+    </div>`;
+  }).join('');
+  const tips = document.getElementById('tips-box');
+  const airItems = items.filter(x=>x.mode==='air');
+  const msgs = [];
+  if(airItems.length>0) msgs.push(`✦ <strong>${airItems.map(x=>x.name).join(', ')}</strong> — pakeitus oro transportą jūriniu, sutaupytumėte iki <strong>${(airItems.reduce((s,x)=>s+x.co2*(1-EF.sea/EF.air),0)).toFixed(1)} kg CO₂e</strong>.`);
+  if(total>20) msgs.push(`✦ Bendra emisija (${total.toFixed(1)} kg) = ~${Math.round(total/0.21).toLocaleString()} km automobiliu. Grupuokite siuntas.`);
+  if(msgs.length===0) msgs.push('✦ Puiku — emisijų lygis žemas!');
+  tips.innerHTML = msgs.join('<br>');
+}
+
+function goToCredits() {
+  const total = items.reduce((s,x)=>s+x.co2,0);
+  showPage('credits', document.querySelectorAll('.nav-link')[2]);
+  document.getElementById('emission-input').value = total.toFixed(2);
+  calcNeeds();
+}
+
+// CARBON CREDITS
+const PROJECTS = [
+  {id:'p1',name:'Amazonės miškų apsauga',country:'Brazilija',cert:['GS','CCB'],price:18,rating:4.9,sold:84,tags:['REDD+','Biologinė įvairovė'],desc:'Apsaugo 180 000 ha pirminių atogrąžų miškų. Remia 12 vietinių bendruomenių.',impacts:['1 kreditas = 1 ha miško apsaugotas 1 mėn.','Remia 3 200 vietinių gyventojų','Saugo 450+ paukščių rūšių']},
+  {id:'p2',name:'Vėjo energija Indijoje',country:'Indija',cert:['VCS'],price:7,rating:4.5,sold:62,tags:['Atsinaujinanti energija'],desc:'18 vėjo turbinų kompleksas Radžastane. Pakeičia anglimi kūrenamą elektrinę.',impacts:['1 kreditas = 1 MWh žalios energijos','240 nuolatinių darbo vietų','~65 000 namų aprūpinami švaria energija']},
+  {id:'p3',name:'Kambodžos mangroviai',country:'Kambodža',cert:['GS','VCS'],price:24,rating:5.0,sold:91,tags:['Mėlynasis anglis','Jūrų ekosistema'],desc:'Atkuria 4 200 ha pakrantės mangrovių. Ypač efektyvus CO₂ surinkimas.',impacts:['1 kreditas = 0.4 ha mangrove atkurta','Apsaugo nuo potvynių','Atnaujina žuvų populiacijas']},
+  {id:'p4',name:'Lietuvos dirvožemio projektas',country:'Lietuva (eAgronom)',cert:['VCS'],price:12,rating:4.8,sold:76,tags:['VM0042','Regeneratyvus ūkininkavimas','Lietuva'],desc:'Lietuvos ūkininkų dirvožemio anglies dioksido surinkimas. Verra VCS VM0042 sertifikuota su South Pole.',impacts:['Lietuviška žemė — CO₂ iš Lietuvos laukų','VM0042 — griežčiausia žemės ūkio metodika','Remia Lietuvos ūkininkus pereinant prie regeneratyvaus ūkininkavimo']},
+  {id:'p5',name:'Kenijos viryklių programa',country:'Kenija',cert:['GS'],price:9,rating:4.7,sold:78,tags:['Namų ūkiai','Sveikata'],desc:'Efektyvesnės biomasės viryklės 85 000 namų ūkių.',impacts:['12 šeimų gauna efektyvią viryklę','60% mažiau medienos kuro','Sumažina oro taršą 80%']},
+  {id:'p6',name:'Islandijos DAC (tiesioginis surinkimas)',country:'Islandija',cert:['VCS'],price:380,rating:4.8,sold:23,tags:['DAC','Technologinis','Premium'],desc:'Climeworks įrenginys. Tiesiogiai išima CO₂ iš atmosferos ir mineralizuoja uolienose.',impacts:['1 t CO₂ amžinai saugoma uolienose','Verifikuojama geologinė saugykla','100% papildomumas']},
+];
+
+let selectedProject = null, qty = 1, neededTonnes = 0;
+
+function renderProjects() {
+  const list = document.getElementById('projects-list');
+  list.innerHTML = PROJECTS.map(p=>{
+    const isSelected = selectedProject && selectedProject.id===p.id;
+    return `<div class="proj-card${isSelected?' selected':''}" onclick="selectProject('${p.id}')">
+      <div style="display:flex;align-items:start;justify-content:space-between;gap:8px">
+        <div style="flex:1">
+          <div style="font-weight:500;font-size:13px">${p.name}</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:1px"><i class="ti ti-map-pin" style="font-size:11px"></i> ${p.country}</div>
+        </div>
+        <div style="text-align:right;flex-shrink:0"><div style="font-weight:600;font-size:15px">€${p.price}</div><div style="font-size:10px;color:var(--text3)">/ t CO₂e</div></div>
+      </div>
+      <div style="margin:8px 0 6px;display:flex;gap:4px;flex-wrap:wrap">
+        ${p.cert.map(c=>`<span class="badge badge-${c.toLowerCase()}">${c}</span>`).join('')}
+        ${p.tags.map(t=>`<span class="tag">${t}</span>`).join('')}
+      </div>
+      <div style="font-size:12px;color:var(--text2);margin-bottom:6px">${p.desc}</div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text3)">
+        <span>★ ${p.rating} (${p.sold}% patenkinti)</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${p.sold}%"></div></div>
+    </div>`;
+  }).join('');
+}
+
+function selectProject(id) {
+  selectedProject = PROJECTS.find(p=>p.id===id);
+  qty = Math.max(1,Math.ceil(neededTonnes));
+  renderProjects();
+  updateCart();
+  document.getElementById('sel-price').textContent = '€'+selectedProject.price;
+  document.getElementById('rec-credits').textContent = Math.max(1,Math.ceil(neededTonnes));
+}
+
+function calcNeeds() {
+  const kg = parseFloat(document.getElementById('emission-input').value)||0;
+  neededTonnes = kg/1000;
+  document.getElementById('need-tonnes').textContent = neededTonnes.toFixed(3);
+  if(selectedProject){qty=Math.max(1,Math.ceil(neededTonnes));updateCart();}
+  if(selectedProject) document.getElementById('rec-credits').textContent=Math.max(1,Math.ceil(neededTonnes));
+}
+
+function changeQty(d) { qty=Math.max(1,qty+d); updateCart(); }
+
+function updateCart() {
+  if(!selectedProject) return;
+  document.getElementById('cart-empty').style.display='none';
+  document.getElementById('cart-content').style.display='block';
+  document.getElementById('cart-proj-name').textContent=selectedProject.name+' · '+selectedProject.country;
+  document.getElementById('cart-proj-cert').textContent=selectedProject.cert.join(' + ')+' sertifikuotas';
+  document.getElementById('qty-display').textContent=qty;
+  document.getElementById('unit-price').textContent='€'+selectedProject.price.toFixed(2);
+  document.getElementById('qty-line').textContent=qty+' t CO₂e';
+  const total=qty*selectedProject.price+2;
+  document.getElementById('cart-total').textContent='€'+total.toFixed(2);
+  const covPct=neededTonnes>0?Math.min(100,Math.round(qty/neededTonnes*100)):100;
+  document.getElementById('coverage-pct').textContent=covPct+'%';
+  document.getElementById('coverage-bar').style.width=covPct+'%';
+  document.getElementById('coverage-bar').style.background=covPct>=100?'var(--green)':covPct>=50?'var(--amber)':'var(--red)';
+}
+
+function purchase() {
+  if(!selectedProject) return;
+  const certId='GS-VCC-'+Date.now().toString(36).toUpperCase()+'-'+Math.random().toString(36).slice(2,6).toUpperCase();
+  const certBox=document.getElementById('cert-box');
+  certBox.style.display='block';
+  document.getElementById('cert-details').textContent=qty+' t CO₂e · '+selectedProject.name+' · '+new Date().toLocaleDateString('lt-LT');
+  document.getElementById('cert-id').textContent='Sertifikato nr.: '+certId;
+}
+
+renderProjects();
+</script>
+</body>
+</html>
