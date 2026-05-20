@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EasyCarbon — CO₂ atitiktis Baltijos įmonėms</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --g:#1a4a35;--gm:#2d6e50;--gl:#4a9470;--gp:#e8f4ee;--gmu:#c4ddd0;
+  --cr:#f7f5f0;--cd:#ede9e1;--tx:#1a1a18;--tm:#4a4a44;--tmu:#8a8a80;
+  --wh:#ffffff;--bd:rgba(26,74,53,0.12);--r:4px;--rl:10px;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Plus Jakarta Sans',sans-serif;font-weight:400;color:var(--tx);background:var(--cr);line-height:1.6;-webkit-font-smoothing:antialiased;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(247,245,240,0.94);backdrop-filter:blur(16px);border-bottom:1px solid var(--bd);padding:0 56px;height:68px;display:flex;align-items:center;justify-content:space-between;}
+.logo{font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--g);letter-spacing:-0.3px;text-decoration:none;font-weight:500;}
+.logo em{font-style:italic;color:var(--g);}
+nav ul{list-style:none;display:flex;gap:36px;align-items:center;}
+nav a{text-decoration:none;font-size:14px;font-weight:400;color:var(--tm);transition:color .2s;}
+nav a:hover{color:var(--g);}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;border-radius:100px;font-size:14px;font-weight:500;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:all .2s;text-decoration:none;border:none;}
+.btn-primary{background:var(--g);color:#fff;}
+.btn-primary:hover{background:var(--gm);}
+.btn-outline{background:transparent;color:var(--g);border:1.5px solid var(--gmu);}
+.btn-outline:hover{border-color:var(--g);background:var(--gp);}
+.btn-white{background:#fff;color:var(--g);}
+.btn-white:hover{background:var(--gp);}
+.btn-lg{padding:15px 36px;font-size:16px;}
+.btn-sm{padding:8px 18px;font-size:13px;}
+
+/* HERO – full screen photo */
+.hero{position:relative;height:100vh;min-height:680px;display:flex;align-items:flex-end;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1800&q=85') center/cover no-repeat;}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,30,20,0.92) 0%,rgba(10,30,20,0.5) 50%,rgba(10,30,20,0.15) 100%);}
+.hero-content{position:relative;z-index:2;width:100%;max-width:1200px;margin:0 auto;padding:100px 56px 80px;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.5);border-radius:100px;padding:8px 20px;font-size:12px;font-weight:500;color:#ffffff;margin-bottom:24px;backdrop-filter:blur(12px);letter-spacing:.8px;text-transform:uppercase;text-shadow:none;}
+.hero-badge::before{content:'';width:6px;height:6px;background:#4a9470;border-radius:50%;}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:68px;line-height:1.05;letter-spacing:-1.5px;color:#fff;margin-bottom:20px;font-weight:400;max-width:760px;}
+.hero h1 em{font-style:italic;color:var(--gmu);}
+.hero-sub{font-size:18px;color:rgba(255,255,255,0.75);line-height:1.65;margin-bottom:36px;max-width:580px;font-weight:300;}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:56px;}
+.hero-stats{display:flex;gap:0;border-top:1px solid rgba(255,255,255,0.15);padding-top:32px;}
+.stat-block{padding:0 40px 0 0;border-right:1px solid rgba(255,255,255,0.15);margin-right:40px;}
+.stat-block:last-child{border-right:none;margin-right:0;padding-right:0;}
+.stat-num{font-family:'Cormorant Garamond',serif;font-size:38px;color:#fff;line-height:1;margin-bottom:4px;}
+.stat-lbl{font-size:12px;color:rgba(255,255,255,0.55);font-weight:400;letter-spacing:.3px;}
+
+/* SECTION BASE */
+section{padding:100px 56px;}
+.si{max-width:1200px;margin:0 auto;}
+.slbl{font-size:11px;font-weight:500;letter-spacing:1.8px;text-transform:uppercase;color:var(--gl);margin-bottom:14px;}
+h2{font-family:'Cormorant Garamond',serif;font-size:46px;font-weight:400;line-height:1.12;letter-spacing:-.5px;color:var(--tx);margin-bottom:14px;}
+h2 em{font-style:italic;color:var(--g);}
+.sdesc{font-size:17px;color:var(--tm);max-width:560px;line-height:1.7;margin-bottom:56px;}
+
+/* URGENCY STRIP */
+.urgency{background:var(--g);padding:18px 56px;}
+.urgency-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:24px;}
+.urgency-text{font-size:15px;color:rgba(255,255,255,0.9);}
+.urgency-text strong{color:#fff;font-weight:500;}
+.urgency-pill{display:flex;gap:24px;}
+.upill{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:100px;padding:6px 18px;font-size:12px;color:rgba(255,255,255,0.8);white-space:nowrap;}
+
+/* SERVICES */
+.svc-bg{background:var(--wh);}
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--bd);border:1px solid var(--bd);border-radius:var(--rl);overflow:hidden;}
+.svc-item{background:var(--wh);padding:44px 36px;position:relative;transition:background .2s;display:flex;flex-direction:column;}
+.svc-item:hover{background:var(--gp);}
+.svc-n{font-family:'Cormorant Garamond',serif;font-size:54px;color:var(--gmu);line-height:1;margin-bottom:20px;}
+.svc-ttl{font-size:18px;font-weight:500;color:var(--tx);margin-bottom:12px;}
+.svc-desc{font-size:14px;color:var(--tm);line-height:1.7;margin-bottom:28px;}
+.svc-price{font-size:13px;color:var(--g);font-weight:500;padding:6px 14px;background:var(--gp);border-radius:100px;display:inline-block;}
+
+/* PROJECTS */
+.proj-bg{background:var(--cd);}
+.proj-intro{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:48px;flex-wrap:wrap;gap:24px;}
+.proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.proj-card{background:var(--wh);border-radius:var(--rl);overflow:hidden;border:1px solid var(--bd);display:flex;flex-direction:column;transition:transform .25s,box-shadow .25s;}
+.proj-card:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(26,74,53,0.13);}
+.proj-img{position:relative;height:220px;overflow:hidden;}
+.proj-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s;}
+.proj-card:hover .proj-img img{transform:scale(1.04);}
+.proj-badges{position:absolute;top:14px;left:14px;display:flex;gap:6px;flex-wrap:wrap;}
+.pbadge{background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);border-radius:100px;padding:4px 12px;font-size:11px;font-weight:500;color:var(--tx);}
+.pbadge-g{background:var(--g);color:#fff;}
+.proj-body{padding:24px;flex:1;display:flex;flex-direction:column;}
+.proj-flag{font-size:20px;margin-bottom:8px;}
+.proj-name{font-size:17px;font-weight:500;color:var(--tx);margin-bottom:8px;line-height:1.3;}
+.proj-desc{font-size:13px;color:var(--tmu);line-height:1.6;margin-bottom:20px;flex:1;}
+.proj-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+.pmeta{font-size:11px;color:var(--gl);background:var(--gp);border-radius:100px;padding:3px 10px;font-weight:500;}
+.proj-footer{display:flex;align-items:center;justify-content:space-between;padding-top:18px;border-top:1px solid var(--bd);gap:12px;}
+.proj-price{font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--g);}
+.proj-price span{font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;color:var(--tmu);font-weight:400;}
+
+/* CBAM */
+.cbam-wrap{background:var(--g);padding:100px 56px;}
+.cbam-in{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:88px;align-items:start;}
+.cbam-wrap h2{color:#fff;margin-bottom:16px;}
+.cbam-wrap h2 em{color:var(--gmu);}
+.cbam-wrap .slbl{color:rgba(255,255,255,0.45);}
+.cbam-desc{font-size:16px;color:rgba(255,255,255,0.72);line-height:1.7;margin-bottom:36px;}
+.cbam-wrap .btn-white{border-radius:100px;}
+.tl{display:flex;flex-direction:column;gap:0;}
+.tli{display:flex;gap:24px;padding:24px 0;border-bottom:1px solid rgba(255,255,255,0.1);}
+.tli:last-child{border-bottom:none;}
+.tly{font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--gmu);min-width:56px;line-height:1.2;}
+.tlt{font-size:14px;color:rgba(255,255,255,0.75);line-height:1.55;}
+.tlt strong{color:#fff;font-weight:500;}
+.tlt .warn{color:#f0b429;font-size:12px;display:block;margin-top:4px;font-weight:500;}
+
+/* HOW */
+.how-bg{background:var(--wh);}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:var(--bd);border:1px solid var(--bd);border-radius:var(--rl);overflow:hidden;}
+.step{background:var(--wh);padding:40px 32px;transition:background .2s;}
+.step:hover{background:var(--gp);}
+.step-n{font-family:'Cormorant Garamond',serif;font-size:42px;color:var(--gmu);margin-bottom:18px;line-height:1;}
+.step-ttl{font-size:16px;font-weight:500;margin-bottom:10px;}
+.step-desc{font-size:13px;color:var(--tm);line-height:1.65;}
+
+/* WHY – photo split */
+.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border-radius:var(--rl);overflow:hidden;border:1px solid var(--bd);}
+.why-img{position:relative;min-height:560px;overflow:hidden;}
+.why-img img{width:100%;height:100%;object-fit:cover;}
+.why-img-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(26,74,53,0.7) 0%,transparent 60%);}
+.why-img-text{position:absolute;bottom:36px;left:36px;right:36px;}
+.why-img-text h3{font-family:'Cormorant Garamond',serif;font-size:30px;color:#fff;font-weight:400;line-height:1.2;margin-bottom:8px;}
+.why-img-text p{font-size:14px;color:rgba(255,255,255,0.75);}
+.why-list-wrap{background:var(--wh);padding:56px;}
+.why-items{display:flex;flex-direction:column;gap:0;}
+.why-item{display:flex;gap:20px;padding:28px 0;border-bottom:1px solid var(--bd);align-items:flex-start;}
+.why-item:last-child{border-bottom:none;}
+.why-icon{width:44px;height:44px;background:var(--gp);border-radius:var(--r);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.why-ttl{font-size:16px;font-weight:500;margin-bottom:6px;}
+.why-desc{font-size:14px;color:var(--tm);line-height:1.6;}
+
+/* TRUST */
+.trust-bg{background:var(--cr);}
+.trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+.trust-card{background:var(--wh);border:1px solid var(--bd);border-radius:var(--rl);padding:28px;text-align:center;}
+.trust-logo{width:52px;height:52px;background:var(--gp);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;}
+.trust-name{font-size:14px;font-weight:500;color:var(--tx);margin-bottom:4px;}
+.trust-role{font-size:12px;color:var(--tmu);}
+
+/* CTA */
+.cta-section{position:relative;overflow:hidden;}
+.cta-bg{position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=1600&q=80') center/cover no-repeat;}
+.cta-ov{position:absolute;inset:0;background:rgba(10,30,20,0.88);}
+.cta-content{position:relative;z-index:2;text-align:center;padding:120px 56px;}
+.cta-content .slbl{color:var(--gmu);}
+.cta-content h2{color:#fff;margin-bottom:16px;}
+.cta-content h2 em{color:var(--gmu);}
+.cta-desc{font-size:18px;color:rgba(255,255,255,0.72);margin-bottom:44px;max-width:560px;margin-left:auto;margin-right:auto;line-height:1.65;}
+.cta-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+
+/* FOOTER */
+footer{background:var(--tx);color:rgba(255,255,255,0.55);padding:56px;}
+.fi{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:40px;}
+.flogo{font-family:'Cormorant Garamond',serif;font-size:26px;color:#fff;margin-bottom:12px;font-weight:500;}
+.flogo em{font-style:italic;}
+.ftagline{font-size:13px;color:rgba(255,255,255,0.45);line-height:1.6;}
+.fcol h4{font-size:12px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:16px;}
+.fcol a{display:block;font-size:14px;color:rgba(255,255,255,0.6);text-decoration:none;margin-bottom:10px;transition:color .2s;}
+.fcol a:hover{color:#fff;}
+.fbot{max-width:1200px;margin:40px auto 0;padding-top:24px;border-top:1px solid rgba(255,255,255,0.08);display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,0.3);}
+
+/* MODAL */
+.modal{display:none;position:fixed;inset:0;z-index:1000;align-items:center;justify-content:center;}
+.modal.open{display:flex;}
+.modal-bg{position:absolute;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);}
+.modal-box{position:relative;z-index:1;background:#fff;border-radius:var(--rl);padding:48px;max-width:480px;width:90%;max-height:90vh;overflow-y:auto;}
+.modal-close{position:absolute;top:16px;right:20px;background:none;border:none;font-size:22px;cursor:pointer;color:var(--tmu);line-height:1;}
+.modal-title{font-family:'Cormorant Garamond',serif;font-size:30px;color:var(--tx);margin-bottom:4px;}
+.modal-sub{font-size:14px;color:var(--tmu);margin-bottom:28px;}
+.modal-price-big{font-family:'Cormorant Garamond',serif;font-size:42px;color:var(--g);margin-bottom:4px;}
+.modal-std{font-size:13px;color:var(--tmu);margin-bottom:28px;}
+.qty-row{display:flex;align-items:center;gap:0;border:1.5px solid var(--gmu);border-radius:var(--r);overflow:hidden;margin-bottom:20px;}
+.qty-btn{width:44px;height:44px;background:var(--gp);border:none;font-size:18px;cursor:pointer;color:var(--g);font-weight:500;transition:background .15s;}
+.qty-btn:hover{background:var(--gmu);}
+.qty-val{flex:1;text-align:center;font-size:16px;font-weight:500;color:var(--tx);}
+.total-row{display:flex;justify-content:space-between;align-items:center;padding:16px 0;border-top:1px solid var(--bd);margin-bottom:8px;}
+.total-lbl{font-size:14px;color:var(--tm);}
+.total-val{font-size:18px;font-weight:500;color:var(--tx);}
+.total-val.main{font-family:'Cormorant Garamond',serif;font-size:30px;color:var(--g);}
+.info-box{background:var(--gp);border-radius:var(--r);padding:14px 16px;font-size:13px;color:var(--g);line-height:1.5;margin-bottom:24px;}
+.modal-input{width:100%;padding:12px 14px;border:1.5px solid var(--bd);border-radius:12px;font-size:14px;font-family:'Plus Jakarta Sans',sans-serif;margin-bottom:12px;transition:border-color .2s;outline:none;color:var(--tx);}
+.modal-input:focus{border-color:var(--gl);}
+.modal-submit{width:100%;padding:15px;background:var(--g);color:#fff;border:none;border-radius:100px;font-size:15px;font-weight:500;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:background .2s;}
+.modal-submit:hover{background:var(--gm);}
+.modal-note{font-size:12px;color:var(--tmu);text-align:center;margin-top:12px;}
+.success-box{text-align:center;padding:24px 0;}
+.success-icon{font-size:48px;margin-bottom:16px;}
+.success-title{font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--g);margin-bottom:8px;}
+.success-desc{font-size:14px;color:var(--tm);}
+
+/* ANIM */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.hero-badge{animation:fadeUp .6s ease .1s both;}
+.hero h1{animation:fadeUp .7s ease .2s both;}
+.hero-sub{animation:fadeUp .7s ease .3s both;}
+.hero-actions{animation:fadeUp .7s ease .4s both;}
+.hero-stats{animation:fadeUp .7s ease .5s both;}
+
+/* TABLET 768-960px */
+@media(max-width:960px){
+  nav{padding:0 28px;}
+  nav ul{display:none;}
+  section{padding:72px 32px;}
+  .hero{min-height:100svh;}
+  .hero-content{padding:100px 32px 72px;}
+  .hero h1{font-size:48px;letter-spacing:-1px;}
+  .hero-sub{font-size:16px;}
+  .hero-stats{gap:0;flex-wrap:wrap;}
+  .stat-block{padding:0 28px 0 0;margin-right:28px;margin-bottom:8px;}
+  .svc-grid{grid-template-columns:1fr;}
+  .proj-grid{grid-template-columns:1fr 1fr;}
+  .trust-grid{grid-template-columns:1fr 1fr;}
+  .steps{grid-template-columns:1fr 1fr;}
+  .cbam-in{grid-template-columns:1fr;gap:48px;}
+  .why-grid{grid-template-columns:1fr;}
+  .fi{grid-template-columns:1fr 1fr;}
+  .urgency{padding:14px 32px;}
+  .urgency-inner{flex-direction:column;align-items:flex-start;gap:12px;}
+  .cbam-wrap{padding:72px 32px;}
+  .cta-content{padding:96px 32px;}
+  footer{padding:48px 32px;}
+  .why-img{min-height:340px;}
+  .why-list-wrap{padding:40px 36px;}
+  .proj-img{height:180px;}
+}
+
+/* MOBILE <640px */
+@media(max-width:640px){
+  /* NAV */
+  nav{padding:0 20px;height:60px;}
+  .logo{font-size:22px;}
+  .btn.btn-primary:not(.mobile-show){display:none;}
+  nav ul{display:none;}
+
+  /* HERO */
+  .hero{min-height:100svh;}
+  .hero-content{padding:80px 20px 56px;}
+  .hero h1{font-size:36px;letter-spacing:-0.5px;line-height:1.1;}
+  .hero-sub{font-size:15px;margin-bottom:28px;}
+  .hero-actions{flex-direction:column;gap:10px;}
+  .hero-actions .btn{width:100%;justify-content:center;padding:14px 24px;}
+  .hero-stats{flex-direction:row;flex-wrap:wrap;gap:0;padding-top:24px;}
+  .stat-block{width:50%;padding:0 0 16px 0;border-right:none;margin-right:0;border-bottom:1px solid rgba(255,255,255,0.1);margin-bottom:0;}
+  .stat-block:nth-child(1),.stat-block:nth-child(2){border-bottom:1px solid rgba(255,255,255,0.1);}
+  .stat-block:nth-child(3),.stat-block:nth-child(4){padding-top:16px;}
+  .stat-num{font-size:28px;}
+
+  /* URGENCY */
+  .urgency{padding:14px 20px;}
+  .urgency-inner{flex-direction:column;gap:10px;}
+  .urgency-text{font-size:13px;}
+  .urgency-pill{flex-direction:column;gap:6px;}
+  .upill{font-size:11px;padding:5px 14px;}
+
+  /* SECTIONS */
+  section{padding:56px 20px;}
+  h2{font-size:34px;}
+  .sdesc{font-size:15px;margin-bottom:36px;}
+  .slbl{font-size:10px;}
+
+  /* SERVICES */
+  .svc-grid{grid-template-columns:1fr;gap:2px;}
+  .svc-item{padding:32px 24px;}
+  .svc-n{font-size:40px;margin-bottom:14px;}
+  .svc-ttl{font-size:16px;}
+
+  /* PROJECTS */
+  .proj-grid{grid-template-columns:1fr;}
+  .proj-intro{flex-direction:column;}
+  .proj-img{height:200px;}
+  .proj-name{font-size:16px;}
+  .proj-footer{flex-direction:column;align-items:flex-start;gap:12px;}
+  .proj-footer .btn{width:100%;justify-content:center;}
+
+  /* CBAM */
+  .cbam-wrap{padding:56px 20px;}
+  .cbam-in{grid-template-columns:1fr;gap:40px;}
+  .cbam-wrap h2{font-size:34px;}
+  .tli{padding:16px 0;}
+  .tly{font-size:18px;min-width:44px;}
+  .tlt{font-size:13px;}
+
+  /* HOW */
+  .steps{grid-template-columns:1fr;}
+  .step{padding:28px 24px;}
+  .step-n{font-size:32px;}
+
+  /* WHY */
+  .why-grid{grid-template-columns:1fr;border-radius:var(--rl);}
+  .why-img{min-height:260px;}
+  .why-img-text h3{font-size:22px;}
+  .why-list-wrap{padding:28px 24px;}
+  .why-item{padding:20px 0;}
+  .why-ttl{font-size:15px;}
+
+  /* TRUST */
+  .trust-grid{grid-template-columns:1fr 1fr;}
+  .trust-card{padding:20px 16px;}
+  .trust-name{font-size:13px;}
+  .trust-role{font-size:11px;}
+
+  /* CTA */
+  .cta-content{padding:72px 20px;}
+  .cta-content h2{font-size:34px;}
+  .cta-desc{font-size:15px;}
+  .cta-btns{flex-direction:column;align-items:center;}
+  .cta-btns .btn{width:100%;max-width:320px;justify-content:center;}
+
+  /* FOOTER */
+  footer{padding:40px 20px;}
+  .fi{grid-template-columns:1fr;gap:28px;}
+  .fbot{flex-direction:column;gap:8px;text-align:center;}
+
+  /* MODAL */
+  .modal-box{padding:32px 24px;margin:16px;}
+  .modal-title{font-size:22px;}
+  .modal-price-big{font-size:32px;}
+}
+
+/* SMALL MOBILE <400px */
+@media(max-width:400px){
+  .hero h1{font-size:30px;}
+  h2{font-size:28px;}
+  .proj-grid{grid-template-columns:1fr;}
+  .trust-grid{grid-template-columns:1fr;}
+}
+
+/* HAMBURGER */
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;z-index:101;}
+.hamburger span{display:block;width:22px;height:1.5px;background:var(--g);transition:all .25s;}
+.hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+.mobile-menu{display:none;position:fixed;top:60px;left:0;right:0;background:rgba(247,245,240,0.98);backdrop-filter:blur(16px);border-bottom:1px solid var(--bd);padding:20px 20px 28px;z-index:99;flex-direction:column;gap:4px;}
+.mobile-menu.open{display:flex;}
+.mobile-menu a{font-size:16px;color:var(--tx);text-decoration:none;padding:12px 0;border-bottom:1px solid var(--bd);font-weight:400;}
+.mobile-menu a:last-child{border-bottom:none;}
+@media(max-width:640px){
+  .hamburger{display:flex;}
+  .nav-cta{display:none;}
+}
+@media(min-width:641px){
+  .mobile-menu{display:none !important;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">Easy<em>Carbon</em></a>
+  <ul>
+    <li><a href="#paslaugos">Paslaugos</a></li>
+    <li><a href="#projektai">Kreditai</a></li>
+    <li><a href="#cbam">CBAM 2026</a></li>
+    <li><a href="#kaip">Procesas</a></li>
+  </ul>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <a href="mailto:info@easycarbon.eu" class="btn btn-primary nav-cta">Nemokama konsultacija</a>
+    <button class="hamburger" onclick="toggleMenu()" aria-label="Meniu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#paslaugos" onclick="toggleMenu()">Paslaugos</a>
+  <a href="#projektai" onclick="toggleMenu()">Kreditai</a>
+  <a href="#cbam" onclick="toggleMenu()">CBAM 2026</a>
+  <a href="#kaip" onclick="toggleMenu()">Procesas</a>
+  <a href="mailto:info@easycarbon.eu" class="btn btn-primary" style="margin-top:8px;width:100%;justify-content:center;">Nemokama konsultacija</a>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    
+    <h1>Jūsų įmonė moka<br>už CO₂. Mes užtikriname,<br>kad <em>mokėtumėte teisingai.</em></h1>
+    <p class="hero-sub">CBAM registracija, sertifikuoti carbon kreditai ir CSRD dokumentai — Lietuvos įmonėms. Atsakome per 24 val.</p>
+    <div class="hero-actions">
+      <a href="mailto:info@easycarbon.eu" class="btn btn-white btn-lg">Gauti nemokamą konsultaciją</a>
+      <a href="#projektai" class="btn btn-lg" style="color:#fff;border:1.5px solid rgba(255,255,255,0.35);">Žiūrėti projektus</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-block"><div class="stat-num">6</div><div class="stat-lbl">Sertifikuoti projektai</div></div>
+      <div class="stat-block"><div class="stat-num">€7</div><div class="stat-lbl">Nuo €/t CO₂</div></div>
+      <div class="stat-block"><div class="stat-num">24h</div><div class="stat-lbl">Atsakymo laikas</div></div>
+      <div class="stat-block"><div class="stat-num">#1</div><div class="stat-lbl">Baltijoje</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- URGENCY -->
+<div class="urgency">
+  <div class="urgency-inner">
+    <div class="urgency-text"><strong>⚡ CBAM įsigalioja 2026 m. sausio 1 d.</strong> — importuotojai privalo registruotis. Bauda be dokumentų: €100/t CO₂.</div>
+    <div class="urgency-pill">
+      <div class="upill">✓ Registracija nuo €299</div>
+      <div class="upill">✓ Ketvirtinė ataskaita €149</div>
+      <div class="upill">✓ Padedame per savaitę</div>
+    </div>
+  </div>
+</div>
+
+<!-- PASLAUGOS -->
+<section id="paslaugos" class="svc-bg">
+  <div class="si">
+    <div class="slbl">Paslaugos</div>
+    <h2>Trys paslaugos.<br>Vienas <em>patikimas partneris.</em></h2>
+    <p class="sdesc">Specializuojamės trijose srityse kur galime garantuoti tikrą rezultatą. Ne platforma, o partneris.</p>
+    <div class="svc-grid">
+      <div class="svc-item">
+        <div class="svc-n">01</div>
+        <div class="svc-ttl">Carbon kreditų pirkimas</div>
+        <p class="svc-desc">Perkate ne tik sertifikatą — perkate įrodymą. Kiekvienas kreditas verifikuojamas Verra registre, retirement atliekamas jūsų įmonės vardu. Matoma viešai. Neginčijama.</p>
+        <span class="svc-price">Nuo €7/t CO₂</span>
+        <div style="margin-top:20px;"><a href="#projektai" class="btn btn-primary btn-sm">Žiūrėti projektus →</a></div>
+      </div>
+      <div class="svc-item">
+        <div class="svc-n">02</div>
+        <div class="svc-ttl">CBAM registracija ir ataskaitos</div>
+        <p class="svc-desc">Nuo 2026 m. sausio — privaloma kiekvienam importuotojui virš 50t. Mes tvarkome viską: registraciją, duomenis, ataskaitas. Jūs dirbate, mes rūpinamės dokumentais.</p>
+        <span class="svc-price">€299 registracija · €149/ketvirtis</span>
+        <div style="margin-top:20px;"><a href="mailto:info@easycarbon.eu?subject=CBAM registracija" class="btn btn-primary btn-sm">Užsakyti CBAM →</a></div>
+      </div>
+      <div class="svc-item">
+        <div class="svc-n">03</div>
+        <div class="svc-ttl">CSRD ir ESG dokumentacija</div>
+        <p class="svc-desc">Didieji pirkėjai ir bankai reikalauja ESG dokumentų iš visų tiekėjų. Be jų — prarandamos sutartys. Paruošiame oficialius dokumentus per savaitę. Priimama bet kokio audito.</p>
+        <span class="svc-price">Nuo €299 vienam dokumentui</span>
+        <div style="margin-top:20px;"><a href="mailto:info@easycarbon.eu?subject=CSRD ESG dokumentacija" class="btn btn-primary btn-sm">Užsakyti ESG →</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJEKTAI -->
+<section id="projektai" class="proj-bg">
+  <div class="si">
+    <div class="proj-intro">
+      <div>
+        <div class="slbl">Carbon kreditai</div>
+        <h2>6 projektai.<br>Kiekvienas <em>verifikuotas.</em></h2>
+        <p class="sdesc" style="margin-bottom:0;">Pasirinkite projektą ir nusipirkite tiesiogiai — retirement atliekamas jūsų vardu per 24 val.</p>
+      </div>
+    </div>
+
+    <div class="proj-grid">
+
+      <!-- 1 InSoil -->
+      <div class="proj-card">
+        <div class="proj-img">
+          <img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=700&q=80" alt="Lietuvos laukai">
+          <div class="proj-badges">
+            <span class="pbadge">🇱🇹 Lietuviškas</span>
+            <span class="pbadge pbadge-g">Rekomenduojame</span>
+          </div>
+        </div>
+        <div class="proj-body">
+          <div class="proj-name">InSoil — Lietuvos dirvožemis</div>
+          <p class="proj-desc">Didžiausias Lietuvos carbon projektas. Regeneracinis žemės ūkis — 154,915 tCO₂e verifikuota. Finansuoja ūkininkų perėjimą į tvarų ūkininkavimą. Vienintelis lietuviškas projektas su tarptautiniu sertifikatu.</p>
+          <div class="proj-meta">
+            <span class="pmeta">Verra VCS VM0042</span>
+            <span class="pmeta">SCS Global</span>
+            <span class="pmeta">Lietuva</span>
+          </div>
+          <div class="proj-footer">
+            <div class="proj-price">€15–25 <span>/t CO₂</span></div>
+            <button class="btn btn-primary btn-sm" onclick="openModal('InSoil — Lietuvos dirvožemis','Verra VCS VM0042',15,25,'insoil')">Pirkti kreditą →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2 Amazone -->
+      <div class="proj-card">
+        <div class="proj-img">
+          <img src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=700&q=80" alt="Amazonės miškai">
+          <div class="proj-badges">
+            <span class="pbadge">🇧🇷 Brazilija</span>
+            <span class="pbadge pbadge-g">Gold Standard</span>
+          </div>
+        </div>
+        <div class="proj-body">
+          <div class="proj-name">Amazonės miškų apsauga</div>
+          <p class="proj-desc">180,000 ha pirminių atogrąžų miškų. REDD+ projektas remiamas 12 vietinių bendruomenių. Saugo 450+ paukščių rūšių buveinę. Griežčiausias Gold Standard sertifikatas.</p>
+          <div class="proj-meta">
+            <span class="pmeta">Gold Standard</span>
+            <span class="pmeta">CCB Standards</span>
+            <span class="pmeta">REDD+</span>
+          </div>
+          <div class="proj-footer">
+            <div class="proj-price">€18–28 <span>/t CO₂</span></div>
+            <button class="btn btn-primary btn-sm" onclick="openModal('Amazonės miškų apsauga','Gold Standard · CCB',18,28,'amazon')">Pirkti kreditą →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3 Agreena -->
+      <div class="proj-card">
+        <div class="proj-img">
+          <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=700&q=80" alt="Europos laukai">
+          <div class="proj-badges">
+            <span class="pbadge">🇪🇺 Europa</span>
+            <span class="pbadge pbadge-g">CCP patvirtinta</span>
+          </div>
+        </div>
+        <div class="proj-body">
+          <div class="proj-name">AgreenaCarbon — Europos žemdirbystė</div>
+          <p class="proj-desc">Didžiausias žemės ūkio carbon projektas Europos istorijoje. 1.6M ha 10 šalių, įskaitant Lietuva, Latvija, Estija. Pirkėjai: Bayer AG, Swiss Re.</p>
+          <div class="proj-meta">
+            <span class="pmeta">Verra VCS VM0042</span>
+            <span class="pmeta">CCP</span>
+            <span class="pmeta">Baltija</span>
+          </div>
+          <div class="proj-footer">
+            <div class="proj-price">€80–150 <span>/t CO₂</span></div>
+            <button class="btn btn-primary btn-sm" onclick="openModal('AgreenaCarbon — Europos žemdirbystė','Verra VCS VM0042 · CCP',80,150,'agreena')">Pirkti kreditą →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 Ecobase -->
+      <div class="proj-card">
+        <div class="proj-img">
+          <img src="https://images.unsplash.com/photo-1448375240586-882707db888b?w=700&q=80" alt="Baltijos miškai">
+          <div class="proj-badges">
+            <span class="pbadge">🌍 Baltija</span>
+            <span class="pbadge pbadge-g">CCP 2025</span>
+          </div>
+        </div>
+        <div class="proj-body">
+          <div class="proj-name">Ecobase ARR — Baltijos miškai</div>
+          <p class="proj-desc">Miškų sodinimas Estijoje, Latvijoje, Suomijoje ir Švedijoje. VM0047 — vienintelė ARR metodika gavusi CCP patvirtinimą 2025 spalį. Būtina CSRD ir SBTi pirkėjams.</p>
+          <div class="proj-meta">
+            <span class="pmeta">Verra VCS VM0047</span>
+            <span class="pmeta">CCP patvirtinta</span>
+          </div>
+          <div class="proj-footer">
+            <div class="proj-price">€35–65 <span>/t CO₂</span></div>
+            <button class="btn btn-primary btn-sm" onclick="openModal('Ecobase ARR — Baltijos miškai','Verra VCS VM0047 · CCP',35,65,'ecobase')">Pirkti kreditą →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5 Katingan -->
+      <div class="proj-card">
+        <div class="proj-img">
+          <img src="https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=700&q=80" alt="Indonezija">
+          <div class="proj-badges">
+            <span class="pbadge">🇮🇩 Indonezija</span>
+            <span class="pbadge pbadge-g">BeZero A</span>
+          </div>
+        </div>
+        <div class="proj-body">
+          <div class="proj-name">Katingan Peatland — Indonezija</div>
+          <p class="proj-desc">7.4M tCO₂e per metus — didžiausias REDD+ projektas pasaulyje. 149,800 ha Borneo durpyno apsauga. Regreener išrinko geriausiu VCS projektu 2026 m. Aukščiausias BeZero reitingas.</p>
+          <div class="proj-meta">
+            <span class="pmeta">Verra VCS VM0048</span>
+            <span class="pmeta">BeZero A</span>
+            <span class="pmeta">REDD+</span>
+          </div>
+          <div class="proj-footer">
+            <div class="proj-price">€18–35 <span>/t CO₂</span></div>
+            <button class="btn btn-primary btn-sm" onclick="openModal('Katingan Peatland — Indonezija','Verra VCS VM0048 · BeZero A',18,35,'katingan')">Pirkti kreditą →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6 DAC -->
+      <div class="proj-card">
+        <div class="proj-img">
+          <img src="https://images.unsplash.com/photo-1476610182048-b716b8518aae?w=700&q=80" alt="Islandija">
+          <div class="proj-badges">
+            <span class="pbadge">🇮🇸 Islandija</span>
+            <span class="pbadge pbadge-g">👑 Premium</span>
+          </div>
+        </div>
+        <div class="proj-body">
+          <div class="proj-name">Islandija — Tiesioginis CO₂ surinkimas</div>
+          <p class="proj-desc">Climeworks Orca įrenginys. CO₂ tiesiogiai išimamas iš atmosferos ir amžinai mineralizuojamas bazaltinėse uolienose. 100% patvirtintas ir amžinas CO₂ šalinimas. Aukščiausias integriteto lygis.</p>
+          <div class="proj-meta">
+            <span class="pmeta">Verra VCS</span>
+            <span class="pmeta">Amžinas šalinimas</span>
+            <span class="pmeta">DAC</span>
+          </div>
+          <div class="proj-footer">
+            <div class="proj-price">€380–600 <span>/t CO₂</span></div>
+            <button class="btn btn-primary btn-sm" onclick="openModal('Islandija — Tiesioginis CO₂ surinkimas','Verra VCS · Amžinas',380,600,'dac')">Pirkti kreditą →</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CBAM -->
+<section id="cbam" class="cbam-wrap">
+  <div class="cbam-in">
+    <div>
+      <div class="slbl">CBAM 2026</div>
+      <h2>Terminas.<br><em>Realus.</em></h2>
+      <p class="cbam-desc">Carbon Border Adjustment Mechanism — nuo 2026 m. sausio privaloma registruotis. Importuojate plieną, aliuminį, cementą ar trąšas virš 50 tonų per metus? Tai jūsų reikalas. Padedame pasiruošti dabar, kol dar nėra baudų.</p>
+      <a href="mailto:info@easycarbon.eu" class="btn btn-white btn-lg">Pasikonsultuoti dėl CBAM →</a>
+    </div>
+    <div class="tl">
+      <div class="tli"><div class="tly">2025</div><div class="tlt"><strong>Pasiruošimas.</strong> Rinkite duomenis apie importuojamas prekes. Susisiekite su mumis — paruošime planą.<span class="warn">→ Veikite dabar</span></div></div>
+      <div class="tli"><div class="tly">2026</div><div class="tlt"><strong>Registracija privaloma.</strong> Visi importuojantys CBAM prekes virš 50t — privalo registruotis. Ketvirtinės ataskaitos prasideda.</div></div>
+      <div class="tli"><div class="tly">2027</div><div class="tlt"><strong>Mokesčiai prasideda.</strong> Pirkti CBAM sertifikatus už kiekvieną CO₂ toną.<span class="warn">⚠ €100/t bauda be dokumentų</span></div></div>
+      <div class="tli"><div class="tly">2034</div><div class="tlt"><strong>Pilnas įsigaliojimas.</strong> 100% CBAM. Visi nemokami EUA pramonei panaikinami. Rinka visiškai pasikeis.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section id="kaip" class="how-bg">
+  <div class="si">
+    <div class="slbl">Procesas</div>
+    <h2>Nuo užklausos<br>iki sertifikato — <em>24 val.</em></h2>
+    <p class="sdesc">Jokių sudėtingų formų, jokio laukimo savaitėmis. Dirbame tiesiogiai ir greitai.</p>
+    <div class="steps">
+      <div class="step"><div class="step-n">01</div><div class="step-ttl">Susisiekiate</div><p class="step-desc">El. paštu arba telefonu. Pasakote ką importuojate arba kiek CO₂ reikia kompensuoti. Jokio pildymo formų.</p></div>
+      <div class="step"><div class="step-n">02</div><div class="step-ttl">Gaunate pasiūlymą</div><p class="step-desc">Per 24 val. — konkretus pasiūlymas su kreditų pasirinkimu arba CBAM veiksmų planu. Be įsipareigojimų.</p></div>
+      <div class="step"><div class="step-n">03</div><div class="step-ttl">Verifikuojame</div><p class="step-desc">Kiekvieną kreditą tikriname Verra registre. Retirement atliekamas jūsų įmonės vardu — matomas viešai.</p></div>
+      <div class="step"><div class="step-n">04</div><div class="step-ttl">Gaunate dokumentus</div><p class="step-desc">Oficialus sertifikatas su serial number. Tinkamas CSRD, ESG ataskaitoms, bankams, IKEA, Lidl.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY -->
+<section>
+  <div class="si">
+    <div class="slbl">Kodėl EasyCarbon</div>
+    <h2 style="margin-bottom:40px;">Kodėl įmonės<br>renkasi <em>EasyCarbon</em></h2>
+    <div class="why-grid">
+      <div class="why-img">
+        <img src="https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?w=900&q=85" alt="Žalia gamta">
+        <div class="why-img-overlay"></div>
+        <div class="why-img-text">
+          <h3>Specializuoti carbon atitikties ekspertai Baltijos regione</h3>
+          <p>Lietuviškai kalbanti komanda, kuri žino Lietuvos importuotojų poreikius iš vidaus.</p>
+        </div>
+      </div>
+      <div class="why-list-wrap">
+        <div class="why-items">
+          <div class="why-item">
+            <div class="why-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="5.5" stroke="#2d6e50" stroke-width="1.4"/><path d="M13.5 13.5L17 17" stroke="#2d6e50" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+            <div><div class="why-ttl">Kiekvienas kreditas verifikuotas Verra registre</div><p class="why-desc">Ne tik PDF sertifikatas. Kiekvienas kreditas patikrinamas viešame Verra registre. Serial number ir retirement — matomi visiems. Jūsų auditoriai gali patikrinti patys.</p></div>
+          </div>
+          <div class="why-item">
+            <div class="why-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M11 3L5 11h6l-2 6 8-9h-6l2-5z" stroke="#2d6e50" stroke-width="1.4" stroke-linejoin="round" fill="none"/></svg></div>
+            <div><div class="why-ttl">Atsakome per 24 val.</div><p class="why-desc">Užklausa šiandien — konkretus atsakymas rytoj. Dokumentai paruošiami per savaitę. Greitis yra svarbu kai CBAM terminas artėja.</p></div>
+          </div>
+          <div class="why-item">
+            <div class="why-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="5" width="14" height="10" rx="2" stroke="#2d6e50" stroke-width="1.4"/><path d="M7 10h6M7 13h4" stroke="#2d6e50" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+            <div><div class="why-ttl">Skaidrios kainos be paslėptų mokesčių</div><p class="why-desc">CBAM registracija €299. Ketvirtinė ataskaita €149. Carbon kreditai nuo €7/t. Mokate tik už tai ko reikia — jokių metinių paketų privalomybių.</p></div>
+          </div>
+          <div class="why-item">
+            <div class="why-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 12l3-3 2 2 4-5 2 2 3-3" stroke="#2d6e50" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div><div class="why-ttl">InSoil partneris — lietuviški kreditai</div><p class="why-desc">Esame oficialūs InSoil distribucijos partneriai. Lietuviški kreditai iš Lietuvos laukų — tai geriausia istorija jūsų ESG ataskaitai.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST -->
+<section class="trust-bg">
+  <div class="si">
+    <div class="slbl" style="text-align:center;margin-bottom:40px;">Standartai ir partneriai</div>
+    <div class="trust-grid">
+      <div class="trust-card"><div class="trust-logo"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M16 28C16 28 6 20 6 13a10 10 0 0 1 20 0c0 7-10 15-10 15z" stroke="#2d6e50" stroke-width="1.5" fill="none"/><circle cx="16" cy="13" r="3" stroke="#2d6e50" stroke-width="1.5" fill="none"/></svg></div><div class="trust-name">InSoil</div><div class="trust-role">Lietuvos dirvožemio kreditai · VCS VM0042</div></div>
+      <div class="trust-card"><div class="trust-logo"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="4" width="24" height="24" rx="4" stroke="#2d6e50" stroke-width="1.5"/><path d="M10 16l4 4 8-8" stroke="#2d6e50" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="trust-name">Verra VCS</div><div class="trust-role">Didžiausias pasaulyje standartas · 63% rinkos</div></div>
+      <div class="trust-card"><div class="trust-logo"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><polygon points="16,4 19.5,12.5 29,13.5 22,20 24,29 16,24.5 8,29 10,20 3,13.5 12.5,12.5" stroke="#2d6e50" stroke-width="1.5" fill="none" stroke-linejoin="round"/></svg></div><div class="trust-name">Gold Standard</div><div class="trust-role">Griežčiausias kokybės standartas</div></div>
+      <div class="trust-card"><div class="trust-logo"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="12" stroke="#2d6e50" stroke-width="1.5"/><path d="M4 16h24M16 4c-3 4-5 8-5 12s2 8 5 12M16 4c3 4 5 8 5 12s-2 8-5 12" stroke="#2d6e50" stroke-width="1.5" fill="none"/></svg></div><div class="trust-name">South Pole</div><div class="trust-role">Šveicarija · Kreditų distribucija</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-bg"></div>
+  <div class="cta-ov"></div>
+  <div class="cta-content">
+    <div class="slbl">Pradėkime</div>
+    <h2>Pirmoji konsultacija<br><em>nemokama ir be įsipareigojimų</em></h2>
+    <p class="cta-desc">Pasakykite ką importuojate arba koks jūsų CO₂ iššūkis — per 24 val. gaunate konkretų atsakymą ir veiksmų planą. Jokio pardavimų spaudimo.</p>
+    <div class="cta-btns">
+      <a href="mailto:info@easycarbon.eu" class="btn btn-white btn-lg">Rašyti el. laišką</a>
+      <a href="tel:+37060000000" class="btn btn-lg" style="color:#fff;border:1.5px solid rgba(255,255,255,0.35);">Skambinti</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="fi">
+    <div><div class="flogo">Easy<em>Carbon</em></div><p class="ftagline">Pirmasis specializuotas carbon atitikties partneris Baltijos regione. Verra VCS · Gold Standard.</p></div>
+    <div class="fcol"><h4>Paslaugos</h4><a href="#paslaugos">Carbon kreditai</a><a href="#paslaugos">CBAM registracija</a><a href="#paslaugos">CSRD dokumentai</a><a href="#paslaugos">ESG ataskaitos</a></div>
+    <div class="fcol"><h4>Projektai</h4><a href="#projektai">InSoil — Lietuva</a><a href="#projektai">Amazonės miškai</a><a href="#projektai">Baltijos ARR</a><a href="#projektai">Islandija DAC</a></div>
+    <div class="fcol"><h4>Kontaktai</h4><a href="mailto:info@easycarbon.eu">info@easycarbon.eu</a><a href="tel:+37060000000">+370 600 00000</a><a href="#">Vilnius, Lietuva</a><a href="#">I–V · 9:00–18:00</a></div>
+  </div>
+  <div class="fbot"><span>© 2025 EasyCarbon · Vilnius, Lietuva</span><span>Verra VCS · Gold Standard · EU CSRD atitiktis</span></div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-bg" onclick="closeModal()"></div>
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<script>
+let modalData={};
+let qty=1;
+
+function openModal(name,std,priceMin,priceMax,id){
+  modalData={name,std,priceMin,priceMax,id};
+  qty=1;
+  renderModal();
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function closeModal(){
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+function changeQty(d){
+  qty=Math.max(1,qty+d);
+  renderModal();
+}
+
+function renderModal(){
+  const {name,std,priceMin,priceMax}=modalData;
+  const price=priceMin;
+  const total=(price*qty+2).toFixed(0);
+  document.getElementById('modal-content').innerHTML=`
+    <div class="modal-title">${name}</div>
+    <div class="modal-sub">Pirkti carbon kreditą</div>
+    <div class="modal-price-big">€${priceMin}–${priceMax}<span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;color:var(--tmu);font-weight:300">/t CO₂</span></div>
+    <div class="modal-std">${std} · Verra verifikuotas</div>
+    <div style="font-size:13px;color:var(--tm);margin-bottom:10px;font-weight:500;">Kreditų kiekis (tonos CO₂)</div>
+    <div class="qty-row">
+      <button class="qty-btn" onclick="changeQty(-1)">−</button>
+      <div class="qty-val">${qty} t CO₂</div>
+      <button class="qty-btn" onclick="changeQty(1)">+</button>
+    </div>
+    <div class="total-row"><span class="total-lbl">Kredito kaina</span><span class="total-val">€${priceMin}/t</span></div>
+    <div class="total-row"><span class="total-lbl">Administracinis mokestis</span><span class="total-val">€2.00</span></div>
+    <div class="total-row" style="border-top:2px solid var(--g);margin-top:4px;"><span class="total-lbl" style="font-weight:500">Iš viso</span><span class="total-val main">€${total}</span></div>
+    <div class="info-box">✓ Retirement atliekamas jūsų vardu Verra registre · Serial number sertifikate · Dokumentai per 24 val.</div>
+    <input class="modal-input" placeholder="Jūsų vardas" id="m-name">
+    <input class="modal-input" placeholder="El. paštas" id="m-email">
+    <input class="modal-input" placeholder="Įmonė (neprivaloma)" id="m-company">
+    <button class="modal-submit" onclick="submitOrder()">Pateikti užklausą — €${total}</button>
+    <div class="modal-note">Mokėjimas el. paštu po patvirtinimo · Grįžtamoji garantija 7 d.</div>
+  `;
+}
+
+function submitOrder(){
+  const name=document.getElementById('m-name').value;
+  const email=document.getElementById('m-email').value;
+  if(!name||!email){alert('Prašome įvesti vardą ir el. paštą.');return;}
+  document.getElementById('modal-content').innerHTML=`
+    <div class="success-box">
+      <div class="success-icon">✅</div>
+      <div class="success-title">Užklausa gauta!</div>
+      <p class="success-desc">Susisieksime su <strong>${email}</strong> per 24 val. dėl mokėjimo detalių ir kreditų sertifikato.<br><br>Kreditai bus registruojami jūsų vardu Verra registre iš karto po apmokėjimo.</p>
+    </div>
+  `;
+}
+
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeMenu();}});
+
+function toggleMenu(){
+  const menu=document.getElementById('mobileMenu');
+  const btn=document.querySelector('.hamburger');
+  menu.classList.toggle('open');
+  btn.classList.toggle('open');
+}
+function closeMenu(){
+  document.getElementById('mobileMenu').classList.remove('open');
+  document.querySelector('.hamburger').classList.remove('open');
+}
+</script>
+</body>
+</html>
